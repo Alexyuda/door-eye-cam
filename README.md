@@ -1,5 +1,3 @@
-# Image processing pipeline
-
 WIP
 
 ## Resources and Credits

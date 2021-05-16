@@ -15,3 +15,5 @@ parser.add_argument("--confidence", type=float, default=0.5,
                 help="minimum probability to filter weak face detections")
 parser.add_argument("--batch-size", type=int, default=1,
                 help="face detection batch size")
+parser.add_argument("--p_min_motion_area", type=float, default=0.01,
+                help="min size of blob in % for motion detection")

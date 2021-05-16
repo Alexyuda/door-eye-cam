@@ -19,13 +19,21 @@ class AnnotateImage(Pipeline):
         return data
 
     def annotate_faces(self, data):
-        """Annotates faces on the image with bounding box and confidence info."""
+        """Add annotations to image."""
 
         if "faces" not in data:  # in the case we switch off the face detector
             return data
 
         annotated_image = data["image"].copy()
         faces = data["faces"]
+        motion_bboxes = data["motion_bboxes"]
+
+        # add date time
+        dt = str(datetime.datetime.now())
+        put_text(annotated_image, dt, (0, 0),
+                 color=colors.get("yellow1").to_bgr(),
+                 bg_color=colors.get("green").to_bgr()
+                 )
 
         # Loop over the faces and draw a rectangle around each
         for i, face in enumerate(faces):
@@ -37,20 +45,13 @@ class AnnotateImage(Pipeline):
                      bg_color=colors.get("green").to_bgr(),
                      org_pos="bl")
 
-            # add date time
-            dt = str(datetime.datetime.now())
-            put_text(annotated_image, dt, (0, 0),
-                     color=colors.get("yellow1").to_bgr(),
-                     bg_color=colors.get("green").to_bgr()
-                     )
-
-            # cv2.putText(annotated_image,
-            #             text=dt,
-            #             org=(10, 100),
-            #             fontScale=1,
-            #             color=colors.get("yellow").to_bgr(),
-            #             thickness=1,
-            #             lineType=cv2.LINE_8)
+        for i, box in enumerate(motion_bboxes):
+            (x1, y1, x2, y2) = box
+            cv2.rectangle(annotated_image, (x1, y1), (x2, y2), colors.get("red").to_bgr(), 2)
+            put_text(annotated_image, f"{i}", (x1 - 1, y1),
+                     color=colors.get("white").to_bgr(),
+                     bg_color=colors.get("green").to_bgr(),
+                     org_pos="bl")
 
         data[self.dst] = annotated_image
 

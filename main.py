@@ -2,6 +2,7 @@ from config import parser
 import os
 from tqdm import tqdm
 from pipeline.capture_video import CaptureVideo
+from pipeline.detect_motion import DetectMotion
 from pipeline.detect_faces import DetectFaces
 from pipeline.display_video import DisplayVideo
 from pipeline.annotate_image import AnnotateImage
@@ -9,12 +10,14 @@ from pipeline.annotate_image import AnnotateImage
 
 def main(args):
     capture_video = CaptureVideo(int(args.input) if args.input.isdigit() else args.input)
+    detect_motion = DetectMotion(args.p_min_motion_area)
     detect_faces = DetectFaces(prototxt=args.prototxt, model=args.model, confidence=args.confidence, batch_size=args.batch_size)
     annotate_image = AnnotateImage("annotated_image") if args.display or args.out_video else None
     display_video = DisplayVideo("annotated_image") if args.display else None
 
     # Create image processing pipeline
     pipeline = (capture_video |
+                detect_motion |
                 detect_faces |
                 annotate_image |
                 display_video)

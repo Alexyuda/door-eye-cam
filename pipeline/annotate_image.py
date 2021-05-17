@@ -38,7 +38,7 @@ class AnnotateImage(Pipeline):
         # Loop over the faces and draw a rectangle around each
         for i, face in enumerate(faces):
             box, confidence = face
-            (x1, y1, x2, y2) = box.astype("int")
+            (x1, y1, x2, y2) = box
             cv2.rectangle(annotated_image, (x1, y1), (x2, y2), colors.get("green").to_bgr(), 2)
             put_text(annotated_image, f"{confidence:.2f}", (x1 - 1, y1),
                      color=colors.get("white").to_bgr(),

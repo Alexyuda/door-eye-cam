@@ -16,31 +16,21 @@ class DetectFaces(Pipeline):
     def generator(self):
         """Yields the image enriched with detected faces metadata"""
 
-        batch = []
         stop = False
         while self.has_next() and not stop:
             try:
                 # Buffer the pipeline stream
                 data = next(self.source)
-                batch.append(data)
             except StopIteration:
                 stop = True
 
-            # Check if there is anything in batch.
-            # Process it if the size match batch_size or there is the end of the input stream.
-            if len(batch) and (len(batch) == self.batch_size or stop):
-                # Prepare images batch
-                images = [data["image"] for data in batch]
-                # Detect faces on all images at once
-                faces = self.detector.detect(images)
+            if data["motion_bboxes"]:
+                faces = self.detector.detect(data["image"])
+                data["faces"] = faces[0]
+            else:
+                data["faces"] = []
 
-                # Extract the faces metadata and attache them to the proper image
-                for image_idx, image_faces in faces.items():
-                    batch[image_idx]["faces"] = image_faces
+            # Yield all the data from buffer
+            if self.filter(data):
+                yield self.map(data)
 
-                # Yield all the data from buffer
-                for data in batch:
-                    if self.filter(data):
-                        yield self.map(data)
-
-                batch = []

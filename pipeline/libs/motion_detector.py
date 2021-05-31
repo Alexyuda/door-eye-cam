@@ -2,6 +2,7 @@ import cv2
 import imutils
 import numpy as np
 
+
 class MotionDetector:
 
     kernel_open = np.ones((5, 5), np.uint8)

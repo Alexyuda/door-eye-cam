@@ -1,5 +1,6 @@
 import cv2
 
+from datetime import datetime
 from pipeline.pipeline import Pipeline
 
 
@@ -31,6 +32,8 @@ class CaptureVideo(Pipeline):
                     "frame_idx": frame_idx,
                     "image_id": f"{frame_idx:06d}",
                     "image": image,
+                    "time": datetime.now(),
+                    "fps": self.fps
                 }
 
                 if self.filter(data):

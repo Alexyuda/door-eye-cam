@@ -3,8 +3,6 @@ import argparse
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description="Video processing pipeline")
-# parser.add_argument("-i", "--input", default="rtsp://alex:4642@10.0.0.11:8080/h264_pcm.sdp",
-#                 help="path to input video file or camera identifier")
 parser.add_argument("-i", "--input", default="0",
                 help="path to input video file or camera identifier")
 parser.add_argument("-d", "--display", default=True, help="display video result")

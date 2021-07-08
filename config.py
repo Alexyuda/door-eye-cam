@@ -3,6 +3,8 @@ import argparse
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description="Video processing pipeline")
+# parser.add_argument("-i", "--input", default="rtsp://alex:4642@10.0.0.11:8080/h264_pcm.sdp",
+#                 help="path to input video file or camera identifier")
 parser.add_argument("-i", "--input", default="0",
                 help="path to input video file or camera identifier")
 parser.add_argument("-d", "--display", default=True, help="display video result")
@@ -17,6 +19,7 @@ parser.add_argument("--batch-size", type=int, default=1,
                 help="face detection batch size")
 parser.add_argument("--p_min_motion_area", type=float, default=0.005,
                 help="min size of blob in % for motion detection")
+parser.add_argument("--select_roi", default=False, help="select a roi for the camera to focus on")
 
 # video recording
 parser.add_argument("--vid_dump_dir", type=str, default=r"C:\Users\alexy\Desktop\cam1",

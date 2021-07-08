@@ -25,3 +25,5 @@ parser.add_argument("--min_motion_to_save_video_sec", type=int, default=0.1,
                     help="This amount of seconds most include motion to start recording")
 parser.add_argument("--min_vid_length_sec", type=int, default=10,
                     help="Lowest limit to video length in seconds")
+parser.add_argument("--delete_after_n_days", type=int, default=14,
+                    help="Keep your videos for this amount of days")

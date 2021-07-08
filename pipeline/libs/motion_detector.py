@@ -28,6 +28,7 @@ class MotionDetector:
         image = cv2.threshold(image, 200, 255, cv2.THRESH_BINARY)[1]
         image = cv2.morphologyEx(image, cv2.MORPH_OPEN, self.kernel_open)
         image = cv2.dilate(image, self.kernel_dilate)
+        image = cv2.dilate(image, None, iterations=2)
         return image
 
     def extract_motion_bboxes(self, image):

@@ -6,6 +6,7 @@ parser = argparse.ArgumentParser(description="Video processing pipeline")
 parser.add_argument("-i", "--input", default="0",
                 help="path to input video file or camera identifier")
 parser.add_argument("-d", "--display", default=True, help="display video result")
+parser.add_argument("-an", "--annotate", default=True, help="Annotate video")
 parser.add_argument("-p", "--progress", default=True, help="display progress")
 parser.add_argument("--prototxt", default="./models/face_detector/deploy.prototxt.txt",
                 help="path to Caffe 'deploy' prototxt file")
@@ -28,3 +29,5 @@ parser.add_argument("--min_vid_length_sec", type=int, default=10,
                     help="Lowest limit to video length in seconds")
 parser.add_argument("--delete_after_n_days", type=int, default=14,
                     help="Keep your videos for this amount of days")
+parser.add_argument("--close_cap_and_start_new_one_after_n_secs", type=float, default=60,
+                    help="After recording this amount of seconds save current cap and start new one")

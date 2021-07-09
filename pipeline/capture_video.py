@@ -51,8 +51,8 @@ class CaptureVideo(Pipeline):
                 cur_time = datetime.now()
                 self.frame_count += 1
                 cur_fps = 1 / (cur_time - self.last_frame_time).total_seconds()
-                self.fps = self.fps * (self.frame_count - 1) / self.frame_count + cur_fps / self.frame_count
-                print(self.fps)
+                self.fps = 0.8 * self.fps + 0.2 * cur_fps
+                # print(self.fps)
                 self.last_frame_time = cur_time
 
                 data = {

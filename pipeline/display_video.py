@@ -21,7 +21,7 @@ class DisplayVideo(Pipeline):
 
     def map(self, data):
         image = data[self.src]
-
+        image = cv2.resize(image, (640, 480))
         cv2.imshow(self.window_name, image)
 
         # Exit?

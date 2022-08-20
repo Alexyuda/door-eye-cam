@@ -21,11 +21,7 @@ class AnnotateImage(Pipeline):
     def annotate_faces(self, data):
         """Add annotations to image."""
 
-        if "faces" not in data:  # in the case we switch off the face detector
-            return data
-
         annotated_image = data["image"].copy()
-        faces = data["faces"]
         motion_bboxes = data["motion_bboxes"]
 
         # add date time
@@ -36,14 +32,16 @@ class AnnotateImage(Pipeline):
                  )
 
         # Loop over the faces and draw a rectangle around each
-        for i, face in enumerate(faces):
-            box, confidence = face
-            (x1, y1, x2, y2) = box
-            cv2.rectangle(annotated_image, (x1, y1), (x2, y2), colors.get("green").to_bgr(), 2)
-            put_text(annotated_image, f"{confidence:.2f}", (x1 - 1, y1),
-                     color=colors.get("white").to_bgr(),
-                     bg_color=colors.get("green").to_bgr(),
-                     org_pos="bl")
+        if "faces" in data:
+            faces = data["faces"]
+            for i, face in enumerate(faces):
+                box, confidence = face
+                (x1, y1, x2, y2) = box
+                cv2.rectangle(annotated_image, (x1, y1), (x2, y2), colors.get("green").to_bgr(), 2)
+                put_text(annotated_image, f"{confidence:.2f}", (x1 - 1, y1),
+                         color=colors.get("white").to_bgr(),
+                         bg_color=colors.get("green").to_bgr(),
+                         org_pos="bl")
 
         for i, box in enumerate(motion_bboxes):
             (x1, y1, x2, y2) = box

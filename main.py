@@ -6,6 +6,7 @@ from tqdm import tqdm
 from pipeline.capture_video import CaptureVideo
 from pipeline.detect_motion import DetectMotion
 from pipeline.detect_faces import DetectFaces
+from pipeline.recognize_faces import RecognizeFaces
 from pipeline.display_video import DisplayVideo
 from pipeline.annotate_image import AnnotateImage
 from pipeline.record_video import RecordVideo
@@ -33,8 +34,9 @@ def main(args):
 
     capture_video = CaptureVideo(int(args.input) if args.input.isdigit() else args.input, args.select_roi)
     detect_motion = DetectMotion(args.p_min_motion_area)
-    detect_faces = DetectFaces(prototxt=args.prototxt, model=args.model, confidence=args.confidence,
-                               batch_size=args.batch_size)
+    detect_faces = DetectFaces(prototxt=args.prototxt, model=args.face_detection_model,
+                               confidence=args.face_detection_confidence, batch_size=args.batch_size) if args.detect_faces else None
+    recognize_faces = RecognizeFaces(model=args.face_recognition_model, confidence=args.face_recognition_confidence) if args.detect_faces else None
     annotate_image = AnnotateImage("image") if args.annotate else None
     display_video = DisplayVideo("image") if args.display else None
     record_video = RecordVideo("image", args.vid_dump_dir, args.min_motion_to_save_video_sec, args.min_vid_length_sec, args.close_cap_and_start_new_one_after_n_secs)
@@ -43,6 +45,7 @@ def main(args):
     pipeline = (capture_video |
                 detect_motion |
                 detect_faces |
+                recognize_faces |
                 annotate_image |
                 display_video |
                 record_video)
